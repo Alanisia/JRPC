@@ -1,36 +1,14 @@
-# netty-rpc
+# Netty-rpc
 
 #### Description
-Simple RPC Framework written in Java, use netty
+A simple RPC Framework written in Java, use netty.
 
-#### Software Architecture
-Software architecture description
+#### Todos
+Plan to develop this project after finishing developing the HTTP server.
 
-#### Installation
+I wish that I can understand the usage of netty at that time, so I can develop the RPC framework easily.
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+It is more complicated than HTTP server...
 
-#### Instructions
+I cannot understand how RPC framework works yet.  
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Contribution
-
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
-
-
-#### Gitee Feature
-
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
