@@ -1,4 +1,4 @@
-package alanisia.rpc.server.handler;
+package alanisia.rpc.handler;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

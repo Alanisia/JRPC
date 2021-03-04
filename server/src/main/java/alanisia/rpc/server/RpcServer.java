@@ -1,15 +1,12 @@
-package alanisia.rpc;
+package alanisia.rpc.server;
 
-import alanisia.rpc.server.Server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class RpcApplication {
-
+public class RpcServer {
 	public static void main(String[] args) {
-		SpringApplication.run(RpcApplication.class, args);
+		SpringApplication.run(RpcServer.class, args);
 		new Server(4000).server();
 	}
-
 }
