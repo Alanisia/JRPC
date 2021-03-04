@@ -1,6 +1,7 @@
-package alanisia.rpc.server;
+package alanisia.rpc.util;
 
 import alanisia.rpc.handler.ServerHandler;
+import alanisia.rpc.util.constant.Constant;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -29,7 +30,7 @@ public class Server {
         try {
             bootstrap.group(bossGroup, workGroup)
                     .channel(NioServerSocketChannel.class)
-                    .option(ChannelOption.SO_BACKLOG, 128)
+                    .option(ChannelOption.SO_BACKLOG, Constant.SO_BACKLOG)
                     .childOption(ChannelOption.TCP_NODELAY, true)
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
@@ -41,7 +42,7 @@ public class Server {
                     });
             ChannelFuture future = bootstrap.bind(port).sync();
             if (future.isSuccess()) {
-                log.info("Server start at {}", port);
+                log.info("Server start at port {}", port);
             } else {
                 log.error("Server start failed, traces: {}", future.cause().getMessage());
                 workGroup.shutdownGracefully();
