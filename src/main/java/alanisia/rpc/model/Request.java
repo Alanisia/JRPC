@@ -10,8 +10,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Request implements Serializable {
-    private int id;
+    private static final long serialVersionUID = 3105683842143416822L;
+
+    private long id;
+    private String className;
     private String methodName;
     private Object[] params;
-    private Class<?> returnType;
+    private Class<?> paramTypes;
 }

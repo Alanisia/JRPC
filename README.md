@@ -1,14 +1,18 @@
-# Netty-rpc
-
-#### Description
-A simple RPC Framework written in Java, use netty.
+# Java-RPC
+A simple RPC Framework written in Java.
 
 #### Todos
-Plan to develop this project after finishing developing the HTTP server.
 
-I wish that I can understand the usage of netty at that time, so I can develop the RPC framework easily.
+序列化写完了
 
-It is more complicated than HTTP server...
+服务器写完了
 
-I cannot understand how RPC framework works yet.  
+还有服务注册没写(最后写吧)
 
+(今天晚上解决下面两个)
+
+动态代理没写
+
+HANDLER没写 
+
+(还有客户端)

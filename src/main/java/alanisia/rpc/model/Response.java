@@ -10,7 +10,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Response implements Serializable {
-    private int id;
+    private static final long serialVersionUID = 4860784028791808887L;
+
+    private long id;
     private String methodName;
+    private int status;
     private Object result;
 }
