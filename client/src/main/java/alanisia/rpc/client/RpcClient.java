@@ -7,5 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class RpcClient {
     public static void main(String[] args) {
         SpringApplication.run(RpcClient.class, args);
+        test();
     }
+
+    public static void test() {
+        // HelloService
+    }
+
 }

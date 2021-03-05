@@ -24,5 +24,4 @@ public class JavaInvocationHandler implements InvocationHandler {
         Class<?> clazz = object.getClass();
         return Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), this);
     }
-
 }

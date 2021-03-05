@@ -2,6 +2,7 @@ package alanisia.rpc.handler;
 
 import alanisia.rpc.model.Request;
 import alanisia.rpc.model.Response;
+import alanisia.rpc.proxy.JavaInvocationHandler;
 import alanisia.rpc.serialize.Serializer;
 import alanisia.rpc.util.JsonUtil;
 import alanisia.rpc.util.constant.Constant;
@@ -11,6 +12,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.lang.reflect.Method;
 
 @Slf4j
 @Service
@@ -32,10 +35,13 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 
         // TODO: We get request. Then we should invoke method that we find in registry table.
         //  We will get result, so we can wrap a response object, serialize it to send to client.
-        Object result = null; // temporarily
+
+        Method method = request.getClazz().getMethod(request.getMethodName(), request.getParamTypes());
+        Object result = method.invoke(request, request.getParams());
         Response response = new Response(request.getId(), request.getMethodName(), Constant.SUCCESS, result);
         byte[] responseBytes = Serializer.serialize(response);
         ctx.writeAndFlush(responseBytes).addListener(ChannelFutureListener.CLOSE);
+
     }
 
     @Override
