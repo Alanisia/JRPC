@@ -1,5 +1,7 @@
 package alanisia.rpc.client;
 
+import alanisia.rpc.api.HelloService;
+import alanisia.rpc.proxy.ProxyInvocationHandler;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -11,7 +13,8 @@ public class RpcClient {
     }
 
     public static void test() {
-        // HelloService
+        HelloService helloService = (HelloService) new ProxyInvocationHandler(HelloService.class).newProxyInstance();
+        helloService.sayHello("Hello world");
     }
 
 }

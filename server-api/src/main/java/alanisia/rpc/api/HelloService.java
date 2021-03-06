@@ -1,4 +1,4 @@
-package alanisia.rpc.server.api;
+package alanisia.rpc.api;
 
 public interface HelloService {
     void sayHello(String name);

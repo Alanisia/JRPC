@@ -16,6 +16,10 @@
             <groupId>alanisia</groupId>
             <artifactId>rpc-framework</artifactId>
         </dependency>
+        <dependency>
+            <groupId>alanisia</groupId>
+            <artifactId>server-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

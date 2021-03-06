@@ -1,6 +1,10 @@
 package alanisia.rpc.util;
 
+import alanisia.rpc.handler.RPCDecoder;
+import alanisia.rpc.handler.RPCEncoder;
 import alanisia.rpc.handler.ServerHandler;
+import alanisia.rpc.model.Request;
+import alanisia.rpc.model.Response;
 import alanisia.rpc.util.constant.Constant;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -19,6 +23,8 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class Server {
     @Autowired private ServerHandler serverHandler;
+    @Autowired private RPCEncoder<Response> rpcEncoder;
+    private final RPCDecoder rpcDecoder = new RPCDecoder(Request.class);
     private final int port;
 
     public Server(int port) { this.port = port; }
@@ -37,6 +43,8 @@ public class Server {
                         @Override
                         protected void initChannel(SocketChannel ch) {
                             ch.pipeline().addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS));
+                            ch.pipeline().addLast(rpcDecoder);
+                            ch.pipeline().addLast(rpcEncoder);
                             ch.pipeline().addLast(serverHandler);
                         }
                     });
@@ -51,7 +59,7 @@ public class Server {
             future.channel().closeFuture().sync();
         } catch (Exception e) {
             log.error("Error: {}", e.getMessage());
-            System.exit(0);
+            System.exit(Constant.FAILED);
         } finally {
             workGroup.shutdownGracefully();
             bossGroup.shutdownGracefully();

@@ -23,8 +23,16 @@ public final class AnnotationUtil {
         return reflections.getTypesAnnotatedWith(annotation);
     }
 
-    public static List<String> getValues(Annotation annotation) {
-        String[] packages = (String[]) AnnotationUtils.getValue(annotation, "basePackage");
+    /**
+     * Get values
+     * @param clazz class that with annotation
+     * @param a class of annotation
+     * @param attribute attribute of annotation
+     * @return a list that content package names in "basePackage"
+     */
+    public static List<String> getValues(Class<?> clazz, Class<? extends Annotation> a, String attribute) {
+        Annotation annotation = clazz.getAnnotation(a);
+        String[] packages = (String[]) AnnotationUtils.getValue(annotation, attribute);
         if (packages != null) {
             log.info("{}", JsonUtil.toPrettyJson(packages));
             return new ArrayList<String>(Arrays.asList(packages));
