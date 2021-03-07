@@ -24,6 +24,7 @@ public class ProxyInvocationHandler implements InvocationHandler {
         request.setParamTypes(method.getParameterTypes());
         request.setParams(objects);
         // TODO: sent request and get result of response
+ 
         Object result = null;
         log.info("End to invoke method ^_^");
         return result;
