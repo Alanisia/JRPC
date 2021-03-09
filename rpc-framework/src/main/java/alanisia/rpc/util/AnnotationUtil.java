@@ -34,8 +34,8 @@ public final class AnnotationUtil {
         Annotation annotation = clazz.getAnnotation(a);
         String[] packages = (String[]) AnnotationUtils.getValue(annotation, attribute);
         if (packages != null) {
-            log.info("{}", JsonUtil.toPrettyJson(packages));
-            return new ArrayList<String>(Arrays.asList(packages));
+            log.info("{}", JsonUtil.toJson(packages));
+            return new ArrayList<>(Arrays.asList(packages));
         } else return null;
     }
 }

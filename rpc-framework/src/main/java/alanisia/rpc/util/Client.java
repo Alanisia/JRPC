@@ -18,10 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Slf4j
 public class Client {
     @Autowired private ClientHandler clientHandler;
-    @Autowired private RPCEncoder<Request> rpcEncoder;
-    private final RPCDecoder rpcDecoder = new RPCDecoder(Response.class);
     private final String host;
     private final int port;
+//    private Map<String, Channel> channelMap = new ConcurrentHashMap<>();
+//    private Map<String, ClientHandler> handlerMap = new ConcurrentHashMap<>();
 
     public Client(String host, int port) {
         this.host = host;
@@ -36,9 +36,9 @@ public class Client {
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        protected void initChannel(SocketChannel socketChannel) throws Exception {
-                            socketChannel.pipeline().addLast(rpcEncoder);
-                            socketChannel.pipeline().addLast(rpcDecoder);
+                        protected void initChannel(SocketChannel socketChannel) {
+                            socketChannel.pipeline().addLast(new RPCDecoder(Response.class));
+                            socketChannel.pipeline().addLast(new RPCEncoder<Request>());
                             socketChannel.pipeline().addLast(clientHandler);
                         }
                     });

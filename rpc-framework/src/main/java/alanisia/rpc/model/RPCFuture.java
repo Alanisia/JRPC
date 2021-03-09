@@ -38,10 +38,12 @@ public class RPCFuture implements Future<Object> {
 
     @Override
     public Object get(long l, TimeUnit timeUnit) {
-        lock.lock(); // why lock here I don't know...
+        lock.lock(); // be sure to synchronize
         long start = System.currentTimeMillis();
         try {
+            // timeout control
             while (!isDone()) {
+                // wait this thread until being done
                 done.await(l, timeUnit);
                 if (isDone() || System.currentTimeMillis() - start > timeout) break;
             }
@@ -58,6 +60,7 @@ public class RPCFuture implements Future<Object> {
         this.response = response;
         lock.lock();
         try {
+            // send signal to waiting thread after getting response
             done.signal();
         } catch (Exception e) {
             log.error("{}", e.getMessage());

@@ -2,16 +2,19 @@ package alanisia.rpc.util;
 
 import alanisia.rpc.annotation.RPC;
 import alanisia.rpc.annotation.RPCScan;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
+import org.apache.zookeeper.data.Stat;
 
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 public class ZKUtil {
     public static final int ZK_PORT = 2181;
     public static final String ZK_HOST = "127.0.0.1";
@@ -28,7 +31,7 @@ public class ZKUtil {
         if (zooKeeper == null) {
             throw new RuntimeException("ZooKeeper hasn't connected!");
         }
-        List<String> packages = AnnotationUtil.getValues(clazz, RPCScan.class, "basePackage");
+        List<String> packages = AnnotationUtil.getValues(clazz, RPCScan.class, "value");
         Set<Set<Class<?>>> classSets = new HashSet<>();
         if (packages != null) {
             for (String paquete : packages) {
@@ -43,4 +46,18 @@ public class ZKUtil {
 
     }
 
+    public static String getDataFromServer(String api)  {
+        try {
+            String path = DEFAULT_ROOT_NODE + "/" + api;
+            Stat exists = zooKeeper.exists(path, true);
+            if (exists != null) {
+                byte[] data = zooKeeper.getData(path, true, new Stat());
+                return new String(data);
+            }
+        } catch (KeeperException | InterruptedException e) {
+            log.error("Failed to get node, cause: {}", e.getMessage());
+            System.exit(0);
+        }
+        return null;
+    }
 }
