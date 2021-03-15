@@ -7,25 +7,24 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
-@Service
 public class ClientHandler extends SimpleChannelInboundHandler<Response> {
     private Map<Long, RPCFuture> futureMap = new ConcurrentHashMap<>();
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Response response) throws Exception {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, Response response) {
+        log.info("Handler: Read from server");
         RPCFuture future = futureMap.get(response.getId());
         future.setResponse(response);
         futureMap.remove(response.getId());
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         log.error("{}", cause.getMessage());
         ctx.close();
     }
@@ -42,5 +41,4 @@ public class ClientHandler extends SimpleChannelInboundHandler<Response> {
         channel.writeAndFlush(request);
         return future;
     }
-
 }

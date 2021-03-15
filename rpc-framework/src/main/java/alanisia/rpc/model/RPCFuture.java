@@ -1,5 +1,6 @@
 package alanisia.rpc.model;
 
+import alanisia.rpc.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -45,7 +46,7 @@ public class RPCFuture implements Future<Object> {
             while (!isDone()) {
                 // wait this thread until being done
                 done.await(l, timeUnit);
-                if (isDone() || System.currentTimeMillis() - start > timeout) break;
+                if (isDone() || System.currentTimeMillis() - start > l) break;
             }
         } catch (InterruptedException e) {
             log.error("{}", e.getMessage());

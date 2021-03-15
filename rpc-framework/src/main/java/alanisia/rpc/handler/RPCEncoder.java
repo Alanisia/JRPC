@@ -9,11 +9,18 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ChannelHandler.Sharable
-public class RPCEncoder<T> extends MessageToByteEncoder<T> {
+public class RPCEncoder extends MessageToByteEncoder<Object> {
+    private final Class<?> target;
+
+    public RPCEncoder(Class<?> target) { this.target = target; }
+
     @Override
-    protected void encode(ChannelHandlerContext channelHandlerContext, T t, ByteBuf byteBuf) throws Exception {
-        byte[] bytes = Serializer.serialize(t);
-        byteBuf.writeInt(bytes.length);
-        byteBuf.writeBytes(bytes);
+    protected void encode(ChannelHandlerContext channelHandlerContext, Object t, ByteBuf byteBuf) throws Exception {
+        log.info("Encode: {}", target.getName());
+        if (target.isInstance(t)) {
+            byte[] bytes = Serializer.serialize(t);
+            byteBuf.writeInt(bytes.length);
+            byteBuf.writeBytes(bytes);
+        }
     }
 }

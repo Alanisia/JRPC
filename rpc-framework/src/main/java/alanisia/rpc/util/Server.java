@@ -16,13 +16,11 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class Server {
-    @Autowired private ServerHandler serverHandler;
     private final int port;
 
     public Server(int port) { this.port = port; }
@@ -41,20 +39,20 @@ public class Server {
                         @Override
                         protected void initChannel(SocketChannel ch) {
                             ch.pipeline().addLast(new IdleStateHandler(30, 0, 0, TimeUnit.SECONDS));
+                            ch.pipeline().addLast(new RPCEncoder(Response.class));
                             ch.pipeline().addLast(new RPCDecoder(Request.class));
-                            ch.pipeline().addLast(serverHandler);
-                            ch.pipeline().addLast(new RPCEncoder<Response>());
+                            ch.pipeline().addLast(new ServerHandler());
                         }
                     });
             ChannelFuture future = bootstrap.bind(port).sync();
             if (future.isSuccess()) {
                 log.info("Server start at port {}", port);
+                future.channel().closeFuture().sync();
             } else {
                 log.error("Server start failed, traces: {}", future.cause().getMessage());
                 workGroup.shutdownGracefully();
                 bossGroup.shutdownGracefully();
             }
-            future.channel().closeFuture().sync();
         } catch (Exception e) {
             log.error("Error: {}", e.getMessage());
             System.exit(Constant.FAILED);

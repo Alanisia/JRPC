@@ -8,23 +8,20 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 @Slf4j
-@Service
 public class ServerHandler extends ChannelInboundHandlerAdapter {
     /**
      * Read from channel.
      * Read the requests from client so I can deserialize them and call methods
      * @param ctx context
      * @param msg message
-     * @throws Exception who cares the exceptions
      */
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
         Request request = (Request) msg;
         log.info("Output: {}", JsonUtil.toPrettyJson(request));
         Object result = invokeMethod(request);
@@ -33,13 +30,20 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        log.info("channel - active");
+        super.channelActive(ctx);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         log.error("{}", cause.getMessage());
         ctx.close();
     }
 
     @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+    public void channelReadComplete(ChannelHandlerContext ctx) {
+        log.info("channel - read complete");
         ctx.flush();
     }
 

@@ -6,10 +6,10 @@ import alanisia.rpc.util.Client;
 import alanisia.rpc.util.constant.Constant;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
-@ComponentScan({"alanisia.rpc"})
 public class RpcClient {
     public static void main(String[] args) {
         SpringApplication.run(RpcClient.class, args);
@@ -18,6 +18,9 @@ public class RpcClient {
 
     public static void test() {
         new Client("localhost", Constant.SERVER_PORT).client();
+        try {
+            TimeUnit.MILLISECONDS.sleep(1000);
+        } catch (InterruptedException ignored) { }
         HelloService helloService = (HelloService) new ProxyInvocationHandler(HelloService.class).newProxyInstance();
         helloService.sayHello("Hello world");
     }
