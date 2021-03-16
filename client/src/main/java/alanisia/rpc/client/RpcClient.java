@@ -1,9 +1,9 @@
 package alanisia.rpc.client;
 
 import alanisia.rpc.api.HelloService;
-import alanisia.rpc.proxy.ProxyInvocationHandler;
-import alanisia.rpc.util.Client;
-import alanisia.rpc.util.constant.Constant;
+import alanisia.rpc.core.proxy.ProxyInvocationHandler;
+import alanisia.rpc.core.Client;
+import alanisia.rpc.core.util.constant.Constant;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

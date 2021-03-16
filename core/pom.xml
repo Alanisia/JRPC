@@ -6,19 +6,11 @@
         <artifactId>rpc</artifactId>
         <groupId>alanisia</groupId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>server</artifactId>
+    <artifactId>core</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>alanisia</groupId>
-            <artifactId>core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>alanisia</groupId>
-            <artifactId>server-api</artifactId>
-        </dependency>
-    </dependencies>
+
 </project>

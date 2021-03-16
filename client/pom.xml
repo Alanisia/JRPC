@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>alanisia</groupId>
-            <artifactId>rpc-framework</artifactId>
+            <artifactId>core</artifactId>
         </dependency>
         <dependency>
             <groupId>alanisia</groupId>

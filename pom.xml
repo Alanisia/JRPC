@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>pom</packaging>
 	<modules>
-		<module>rpc-framework</module>
+		<module>core</module>
 		<module>server</module>
 		<module>client</module>
         <module>server-api</module>
@@ -76,7 +76,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>alanisia</groupId>
-				<artifactId>rpc-framework</artifactId>
+				<artifactId>core</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
