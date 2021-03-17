@@ -38,4 +38,13 @@ public final class AnnotationUtil {
             return new ArrayList<>(Arrays.asList(packages));
         } else return null;
     }
+
+    public static Object getValue(Class<?> clazz, Class<? extends Annotation> a, String attribute) {
+        Annotation annotation = clazz.getAnnotation(a);
+        Object value = AnnotationUtils.getValue(annotation, attribute);
+        if (value != null) {
+            log.info("{}", value);
+            return value;
+        } else return null;
+    }
 }

@@ -5,11 +5,11 @@ import alanisia.rpc.api.HelloService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RPC(HelloService.class)
+@RPC(value = HelloService.class, version = "2")
 public class HelloServiceImpl2 implements HelloService {
     @Override
-    public void sayHello(String name) {
-        log.info("Say name: {}", name);
+    public String sayHello(String name) {
+        return name;
     }
 
     @Override

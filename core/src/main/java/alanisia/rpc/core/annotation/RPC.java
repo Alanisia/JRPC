@@ -7,4 +7,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RPC {
     Class<?> value();
+    String version();
 }

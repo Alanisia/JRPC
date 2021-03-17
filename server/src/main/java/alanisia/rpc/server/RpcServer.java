@@ -18,9 +18,8 @@ public class RpcServer {
 		SpringApplication.run(RpcServer.class, args);
 		try {
 			// ZKUtil.connectZKCluster(ZKUtil.ZK_HOST, ZKUtil.ZK_PORT);
-			Proxy proxy = new Proxy();
-			proxy.initProxyMap(RpcServer.class);
-
+			Proxy.initProxyMap(RpcServer.class);
+			Proxy.print();
 			new Server(Constant.SERVER_PORT).server();
 		} catch (Exception e) {
 			// log.error("{}", e.getStackTrace());

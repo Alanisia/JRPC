@@ -16,8 +16,12 @@ import java.lang.reflect.Proxy;
 @Slf4j
 public class ProxyInvocationHandler implements InvocationHandler {
     private final Class<?> clazz;
+    private final String version;
 
-    public ProxyInvocationHandler(Class<?> clazz) { this.clazz = clazz; }
+    public ProxyInvocationHandler(Class<?> clazz, String version) {
+        this.clazz = clazz;
+        this.version = version;
+    }
 
     @Override
     public Object invoke(Object o, Method method, Object[] objects) {
@@ -32,6 +36,7 @@ public class ProxyInvocationHandler implements InvocationHandler {
         request.setMethodName(method.getName());
         request.setParamTypes(method.getParameterTypes());
         request.setParams(objects);
+        request.setVersion(version);
         RPCFuture future = FutureCommon.request(request, Client.getFuture());
         Object result = future.get();
         log.info("End to invoke method ^_^");
