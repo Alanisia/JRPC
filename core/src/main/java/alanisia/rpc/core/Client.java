@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Client {
+    private final EventLoopGroup bossGroup = new NioEventLoopGroup();
     private static ChannelFuture future = null;
     private final String host;
     private final int port;
@@ -24,7 +25,6 @@ public class Client {
     }
 
     public void client() {
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
         try {
             bootstrap.group(bossGroup)
@@ -46,6 +46,10 @@ public class Client {
         } catch (InterruptedException e) {
             log.error("{}", e.getMessage());
         }
+    }
+
+    public void shutdown () {
+        bossGroup.shutdownGracefully();
     }
 
     public static ChannelFuture getFuture() {

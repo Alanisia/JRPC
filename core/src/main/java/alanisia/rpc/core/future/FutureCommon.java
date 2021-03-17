@@ -28,13 +28,10 @@ public class FutureCommon {
     public static RPCFuture request(final Request request, ChannelFuture channelFuture) {
         RPCFuture future = new RPCFuture();
         put(request.getId(), future);
-            channelFuture.channel().writeAndFlush(request).addListener(f -> {
-                if (f.isSuccess()) {
-                    log.info("Write data OK");
-                } else {
-                    f.cause().printStackTrace();
-                }
-            });
+        channelFuture.channel().writeAndFlush(request).addListener(f -> {
+            if (f.isSuccess()) log.info("Write data OK");
+            else f.cause().printStackTrace();
+        });
         return future;
     }
 }

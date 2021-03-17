@@ -19,7 +19,8 @@ public class RpcClient {
     }
 
     public static void test() {
-        new Client("localhost", Constant.SERVER_PORT).client();
+        Client client = new Client("localhost", Constant.SERVER_PORT);
+        client.client();
         try {
             TimeUnit.MILLISECONDS.sleep(1000);
         } catch (InterruptedException ignored) { }
@@ -27,6 +28,7 @@ public class RpcClient {
         HelloService helloService1 = (HelloService) new ProxyInvocationHandler(HelloService.class, "2").newProxyInstance();
         log.info("Say hello: {}", helloService.sayHello("Hello world"));
         log.info("1 + 2 = {}", helloService1.add(1, 2));
+        client.shutdown();
     }
 
 }

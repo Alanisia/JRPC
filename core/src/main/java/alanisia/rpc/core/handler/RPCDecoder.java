@@ -15,7 +15,7 @@ public class RPCDecoder extends ByteToMessageDecoder {
     public RPCDecoder(Class<?> target) { this.target = target; }
 
     @Override
-    protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
+    protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) {
         log.info("Decode, {}", target.getName());
         if (byteBuf.readableBytes() >= 4) {
             byteBuf.markReaderIndex();

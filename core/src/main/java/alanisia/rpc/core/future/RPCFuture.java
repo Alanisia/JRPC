@@ -12,7 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 @Slf4j
 public class RPCFuture implements Future<Object> {
-    private final long timeout = 10000;
+    private final long timeout = 30000;
     private final Lock lock = new ReentrantLock();
     private final Condition done = lock.newCondition();
     private Response response = null;
