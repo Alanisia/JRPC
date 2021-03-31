@@ -7,11 +7,13 @@ import alanisia.rpc.core.util.constant.Constant;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 @Slf4j
+@Service
 public class ServerHandler extends SimpleChannelInboundHandler<Request> {
     /**
      * Read from channel.

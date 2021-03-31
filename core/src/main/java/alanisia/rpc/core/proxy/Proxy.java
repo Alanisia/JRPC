@@ -7,24 +7,25 @@ import alanisia.rpc.core.util.constant.Constant;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Getter
 public class Proxy {
-    private static Map<String, Class<?>> proxyMap = new ConcurrentHashMap<>();;
+    private static Map<String, Class<?>> proxyMap = new ConcurrentHashMap<>();
+    private static List<String> apiList = Collections.synchronizedList(new ArrayList<>());
 
-    private Proxy() { }
+    private Proxy() {
+    }
 
     public static boolean isClassExisted(String version) {
         return proxyMap.containsKey(version);
     }
 
-    public static Class<?> getClazz(String version) { return proxyMap.get(version); }
+    public static Class<?> getClazz(String version) {
+        return proxyMap.get(version);
+    }
 
     public static void initProxyMap(Class<?> clazz) {
         // Get packages that with @RPCScan
@@ -37,8 +38,9 @@ public class Proxy {
                     Class<?> value = (Class<?>) AnnotationUtil.getValue(c, RPC.class, Constant.RPC_VALUE);
                     String version = (String) AnnotationUtil.getValue(c, RPC.class, Constant.RPC_VERSION);
                     if (value != null && version != null) {
-                        String key = value + "_" + version;
+                        String key = value.getName() + "_" + version;
                         proxyMap.put(key, c);
+                        apiList.add(key);
                     }
                 }
             }
@@ -49,5 +51,9 @@ public class Proxy {
         for (Map.Entry<String, Class<?>> entry : proxyMap.entrySet()) {
             log.info("{} : {}", entry.getKey(), entry.getValue().getName());
         }
+    }
+
+    public static List<String> getApiList() {
+        return apiList;
     }
 }
