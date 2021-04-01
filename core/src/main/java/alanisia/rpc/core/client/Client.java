@@ -1,4 +1,4 @@
-package alanisia.rpc.core;
+package alanisia.rpc.core.client;
 
 import alanisia.rpc.core.handler.ClientHandler;
 import alanisia.rpc.core.handler.RPCDecoder;
@@ -42,7 +42,6 @@ public class Client {
                         }
                     });
             future = bootstrap.connect(host, port).sync();
-            // ClientConfiguration.put(host, port, future);
             log.info("Connect to server {}:{} successfully", host, port);
             // no need to add finally block if we don't want to call
             // future.channel().closeFuture().sync()
@@ -56,7 +55,7 @@ public class Client {
         bossGroup.shutdownGracefully();
     }
 
-    public static ChannelFuture getFuture() {
+    public ChannelFuture getFuture() {
         return future;
     }
 }

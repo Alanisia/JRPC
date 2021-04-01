@@ -1,4 +1,4 @@
-package alanisia.rpc.core.config;
+package alanisia.rpc.core.client;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

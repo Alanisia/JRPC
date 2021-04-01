@@ -38,7 +38,7 @@ public class ServerHandler extends SimpleChannelInboundHandler<Request> {
         try {
             Class<?> clazz = request.getClazz();
             Method method = clazz.getMethod(request.getMethodName(), request.getParamTypes());
-            String version = "interface " + clazz.getName() + "_" + request.getVersion();
+            String version = clazz.getName() + "_" + request.getVersion();
             if (Proxy.isClassExisted(version))
                 return method.invoke(Proxy.getClazz(version).getDeclaredConstructor().newInstance(), request.getParams());
             else throw new NoSuchMethodException();
