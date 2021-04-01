@@ -77,4 +77,8 @@ public class ZKUtil {
             ls(path + "/" + s);
         }
     }
+
+    public static void close() throws InterruptedException {
+        zooKeeper.close();
+    }
 }

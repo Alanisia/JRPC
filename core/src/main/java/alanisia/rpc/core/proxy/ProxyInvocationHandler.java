@@ -7,6 +7,7 @@ import alanisia.rpc.core.future.FutureCommon;
 import alanisia.rpc.core.future.RPCFuture;
 import alanisia.rpc.core.model.Request;
 import alanisia.rpc.core.util.ZKUtil;
+import alanisia.rpc.core.util.constant.Constant;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.InvocationHandler;
@@ -17,7 +18,6 @@ import java.lang.reflect.Proxy;
 public class ProxyInvocationHandler implements InvocationHandler {
     private final Class<?> clazz;
     private final String version;
-    private Client client = null;
 
     public ProxyInvocationHandler(Class<?> clazz, String version) {
         this.clazz = clazz;
@@ -34,15 +34,11 @@ public class ProxyInvocationHandler implements InvocationHandler {
         request.setParamTypes(method.getParameterTypes());
         request.setParams(objects);
         request.setVersion(version);
-        connect2c(request);
-        RPCFuture future = FutureCommon.request(request, client.getFuture());
-        // RPCFuture future = FutureCommon.request(request, Client.getFuture());
+        Address address = getAddress(request);
+        Client.connect(address);
+        RPCFuture future = FutureCommon.request(request, ClientCommon.get(address));
         Object result = future.get();
         log.info("End to invoke method ^_^");
-//        if (result != null && client != null) {
-//            client.shutdown();
-//            client = null;
-//        }
         return result;
     }
 
@@ -50,28 +46,13 @@ public class ProxyInvocationHandler implements InvocationHandler {
         return Proxy.newProxyInstance(clazz.getClassLoader(), new Class<?>[]{clazz}, this);
     }
 
-    private void connect2c(Request request) {
-        String[] address = ZKUtil.discover(request.getClazz().getName() + "_" + request.getVersion()).split(":");
-        String host = address[0];
-        int port = Integer.parseInt(address[1]);
-        Address addr = new Address(host, port);
-        if (!ClientCommon.contains(addr)) {
-            log.info("Generate a new client");
-            client = new Client(host, port);
-            ClientCommon.put(host, port, client);
-            client.client();
+    public Address getAddress(Request request) {
+        String addr = ZKUtil.discover(request.getClazz().getName() + "_" + request.getVersion());
+        if (addr == null) {
+            log.error("No api.");
+            System.exit(Constant.FAILED);
         }
-//        } else {
-//            log.info("Get existed client from client map");
-//            client = ClientCommon.get(addr);
-//        }
-//        // executorService.execute(() -> client.client());
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ignored) {}
+        String[] address = addr.split(":");
+        return new Address(address[0], Integer.parseInt(address[1]));
     }
-
-//    public ExecutorService getExecutorService() {
-//        return executorService;
-//    }
 }

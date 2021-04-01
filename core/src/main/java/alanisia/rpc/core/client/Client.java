@@ -18,31 +18,27 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class Client {
     private final EventLoopGroup bossGroup = new NioEventLoopGroup();
-    private static ChannelFuture future = null;
-    private final String host;
-    private final int port;
-
-    public Client(String host, int port) {
-        this.host = host;
-        this.port = port;
-    }
+    private static final Bootstrap bootstrap = new Bootstrap();
 
     public void client() {
-        Bootstrap bootstrap = new Bootstrap();
+        bootstrap.group(bossGroup)
+                .channel(NioSocketChannel.class)
+                .option(ChannelOption.SO_KEEPALIVE, true)
+                .handler(new ChannelInitializer<SocketChannel>() {
+                    @Override
+                    protected void initChannel(SocketChannel socketChannel) {
+                        socketChannel.pipeline().addLast(new RPCEncoder(Request.class));
+                        socketChannel.pipeline().addLast(new RPCDecoder(Response.class));
+                        socketChannel.pipeline().addLast(new ClientHandler());
+                    }
+                });
+    }
+
+    public static void connect(Address address) {
         try {
-            bootstrap.group(bossGroup)
-                    .channel(NioSocketChannel.class)
-                    .option(ChannelOption.SO_KEEPALIVE, true)
-                    .handler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel socketChannel) {
-                            socketChannel.pipeline().addLast(new RPCEncoder(Request.class));
-                            socketChannel.pipeline().addLast(new RPCDecoder(Response.class));
-                            socketChannel.pipeline().addLast(new ClientHandler());
-                        }
-                    });
-            future = bootstrap.connect(host, port).sync();
-            log.info("Connect to server {}:{} successfully", host, port);
+            ChannelFuture future = bootstrap.connect(address.getHost(), address.getPort()).sync();
+            ClientCommon.put(address.getHost(), address.getPort(), future);
+            log.info("Connect to server {}:{} successfully", address.getHost(), address.getPort());
             // no need to add finally block if we don't want to call
             // future.channel().closeFuture().sync()
             // so the channel won't be closed
@@ -51,11 +47,7 @@ public class Client {
         }
     }
 
-    public void shutdown () {
+    public void shutdown() {
         bossGroup.shutdownGracefully();
-    }
-
-    public ChannelFuture getFuture() {
-        return future;
     }
 }

@@ -1,5 +1,6 @@
 package alanisia.rpc.core.client;
 
+import io.netty.channel.ChannelFuture;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
@@ -7,28 +8,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class ClientCommon {
-    private static Map<Address, Client> clientMap = new ConcurrentHashMap<>();
+    private static Map<Address, ChannelFuture> channelFutureMap = new ConcurrentHashMap<>();
 
-    public static Client get(Address address) {
-        return clientMap.get(address);
+    public static ChannelFuture get(Address address) {
+        return channelFutureMap.get(address);
     }
 
-    public static void put(String host, int port, Client client) {
-        clientMap.put(new Address(host, port), client);
+    public static void put(String host, int port, ChannelFuture channelFuture) {
+        channelFutureMap.put(new Address(host, port), channelFuture);
     }
 
     public static boolean contains(Address address) {
-        return clientMap.containsKey(address);
-    }
-
-    public static void shutdownAll() {
-        try {
-            Thread.sleep(1000);
-            for (Map.Entry<Address, Client> entry : clientMap.entrySet()) {
-                entry.getValue().shutdown();
-            }
-        } catch (Exception e) {
-            log.error("{}", e.getMessage());
-        }
+        return channelFutureMap.containsKey(address);
     }
 }
