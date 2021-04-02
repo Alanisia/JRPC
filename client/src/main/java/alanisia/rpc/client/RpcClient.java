@@ -4,16 +4,18 @@ import alanisia.rpc.api.HelloService;
 import alanisia.rpc.core.client.Client;
 import alanisia.rpc.core.proxy.ProxyInvocationHandler;
 import alanisia.rpc.core.util.ZKUtil;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import java.util.concurrent.TimeUnit;
 
-@Slf4j
 @ComponentScan({"alanisia.rpc.core"})
 @SpringBootApplication
 public class RpcClient {
+    private static final Logger log = LoggerFactory.getLogger(RpcClient.class);
+
     public static void main(String[] args) {
         SpringApplication.run(RpcClient.class, args);
         test();
