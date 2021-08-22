@@ -2,14 +2,9 @@ package alanisia.rpc.core.test;
 
 import alanisia.rpc.core.handler.RPCEncoder;
 import alanisia.rpc.core.model.Request;
-import alanisia.rpc.core.serialize.Serializer;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.embedded.EmbeddedChannel;
-import org.junit.jupiter.api.Test;
-
-import java.io.ObjectInputStream;
+import org.junit.Test;
 
 public class EncoderTest {
     @Test
@@ -26,9 +21,6 @@ public class EncoderTest {
                 embeddedChannel.pipeline().addLast(new RPCEncoder(Request.class));
             }
         };
-        // ByteBuf buf = Unpooled.buffer();
-        // buf.writeBytes(new ObjectInputStream());
-
         EmbeddedChannel channel = new EmbeddedChannel(ci);
         channel.writeOutbound(request);
         Thread.sleep(2000);

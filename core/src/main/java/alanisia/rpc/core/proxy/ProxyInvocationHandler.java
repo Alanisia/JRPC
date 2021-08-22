@@ -28,12 +28,12 @@ public class ProxyInvocationHandler implements InvocationHandler {
     public Object invoke(Object o, Method method, Object[] objects) {
         log.info("Invoke method {}...", method.getName());
         Request request = new Request();
-        request.setId(System.currentTimeMillis());
-        request.setClazz(clazz);
-        request.setMethodName(method.getName());
-        request.setParamTypes(method.getParameterTypes());
-        request.setParams(objects);
-        request.setVersion(version);
+        request.setId(System.currentTimeMillis())
+            .setClazz(clazz)
+            .setMethodName(method.getName())
+            .setParamTypes(method.getParameterTypes())
+            .setParams(objects)
+            .setVersion(version);
         Address address = getAddress(request);
         Client.connect(address);
         RPCFuture future = FutureCommon.request(request, ClientCommon.get(address));

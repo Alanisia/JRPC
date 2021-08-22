@@ -1,7 +1,7 @@
+
 package alanisia.rpc.core.test;
 
 import alanisia.rpc.core.handler.RPCDecoder;
-import alanisia.rpc.core.handler.RPCEncoder;
 import alanisia.rpc.core.model.Response;
 import alanisia.rpc.core.serialize.Serializer;
 import alanisia.rpc.core.util.constant.Constant;
@@ -9,7 +9,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.embedded.EmbeddedChannel;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class DecoderTest {
     @Test
@@ -17,7 +17,6 @@ public class DecoderTest {
         ChannelInitializer<EmbeddedChannel> i = new ChannelInitializer<>() {
             @Override
             protected void initChannel(EmbeddedChannel channel) {
-                // channel.pipeline().addLast(new RPCEncoder(Response.class));
                 channel.pipeline().addLast(new RPCDecoder(Response.class));
             }
         };
