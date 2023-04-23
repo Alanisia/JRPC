@@ -13,8 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Getter
 public class Proxy {
-    private static Map<String, Class<?>> proxyMap = new ConcurrentHashMap<>();
-    private static List<String> apiList = Collections.synchronizedList(new ArrayList<>());
+    private static final Map<String, Class<?>> proxyMap = new ConcurrentHashMap<>();
+    private static final List<String> apiList = Collections.synchronizedList(new ArrayList<>());
 
     private Proxy() {
     }

@@ -54,8 +54,7 @@ public class RPCFuture implements Future<Object> {
         } finally {
             lock.unlock();
         }
-        if (Objects.requireNonNull(response).getStatus() == 1) return response.getResult();
-        else return null;
+        return Objects.requireNonNull(response).getStatus() == 1 ? response.getResult() : null;
     }
 
     public void setResponse(Response response) {
